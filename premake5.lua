@@ -54,13 +54,44 @@ end
 
 function conf_excludes()
 	if os.istarget("windows") then
-		excludes { "src/efsw/WatcherKqueue.cpp", "src/efsw/WatcherFSEvents.cpp", "src/efsw/WatcherInotify.cpp", "src/efsw/FileWatcherKqueue.cpp", "src/efsw/FileWatcherInotify.cpp", "src/efsw/FileWatcherFSEvents.cpp" }
+
+		excludes { 
+			"efsw/src/efsw/WatcherKqueue.cpp",
+			"efsw/src/efsw/WatcherFSEvents.cpp",
+			"efsw/src/efsw/WatcherInotify.cpp",
+			"efsw/src/efsw/FileWatcherKqueue.cpp",
+			"efsw/src/efsw/FileWatcherInotify.cpp",
+			"efsw/src/efsw/FileWatcherFSEvents.cpp"
+		}
+
 	elseif os.istarget("linux") then
-		excludes { "src/efsw/WatcherKqueue.cpp", "src/efsw/WatcherFSEvents.cpp", "src/efsw/WatcherWin32.cpp", "src/efsw/FileWatcherKqueue.cpp", "src/efsw/FileWatcherWin32.cpp", "src/efsw/FileWatcherFSEvents.cpp" }
+
+		excludes { 
+			"efsw/src/efsw/WatcherKqueue.cpp",
+			"efsw/src/efsw/WatcherFSEvents.cpp",
+			"efsw/src/efsw/WatcherWin32.cpp", 
+			"efsw/src/efsw/FileWatcherKqueue.cpp", 
+			"efsw/src/efsw/FileWatcherWin32.cpp", 
+			"efsw/src/efsw/FileWatcherFSEvents.cpp"
+		}
+
 	elseif os.istarget("macosx") then
-		excludes { "src/efsw/WatcherInotify.cpp", "src/efsw/WatcherWin32.cpp", "src/efsw/FileWatcherInotify.cpp", "src/efsw/FileWatcherWin32.cpp" }
+		excludes { 
+			"efsw/src/efsw/WatcherInotify.cpp", 
+			"efsw/src/efsw/WatcherWin32.cpp", 
+			"efsw/src/efsw/FileWatcherInotify.cpp", 
+			"efsw/src/efsw/FileWatcherWin32.cpp" 
+		}
+
 	elseif os.istarget("bsd") then
-		excludes { "src/efsw/WatcherInotify.cpp", "src/efsw/WatcherWin32.cpp", "src/efsw/WatcherFSEvents.cpp", "src/efsw/FileWatcherInotify.cpp", "src/efsw/FileWatcherWin32.cpp", "src/efsw/FileWatcherFSEvents.cpp" }
+		excludes { 
+			"efsw/src/efsw/WatcherInotify.cpp", 
+			"efsw/src/efsw/WatcherWin32.cpp", 
+			"efsw/src/efsw/WatcherFSEvents.cpp", 
+			"efsw/src/efsw/FileWatcherInotify.cpp", 
+			"efsw/src/efsw/FileWatcherWin32.cpp", 
+			"efsw/src/efsw/FileWatcherFSEvents.cpp" 
+		}
 	end
 end
 
@@ -71,9 +102,9 @@ workspace "efsw"
 	platforms { "x86_64", "x86", "ARM", "ARM64" }
 
 	if os.istarget("windows") then
-		osfiles = "src/efsw/platform/win/*.cpp"
+		osfiles = "efsw/src/efsw/platform/win/*.cpp"
 	else
-		osfiles = "src/efsw/platform/posix/*.cpp"
+		osfiles = "efsw/src/efsw/platform/posix/*.cpp"
 	end
 
 	-- Activates verbose mode
@@ -101,8 +132,8 @@ workspace "efsw"
 		kind "StaticLib"
 		language "C++"
 		targetdir("./lib")
-		includedirs { "include", "src" }
-		files { "src/efsw/*.cpp", osfiles }
+		includedirs { "efsw/include", "efsw/src" }
+		files { "efsw/src/efsw/*.cpp", osfiles }
 		conf_excludes()
 
 		filter "configurations:debug"
