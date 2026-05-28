@@ -111,8 +111,10 @@ project "efsw"
 		defines { "DEBUG" }
 		symbols "On"
 		conf_warnings()
+	filter ""
 
 	filter "configurations:release"
 		defines { "NDEBUG" }
 		optimize "On"
 		conf_warnings()
+	filter ""
