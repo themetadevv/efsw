@@ -100,6 +100,13 @@ project "efsw"
 	language "C++"
 	targetdir("./lib")
 	includedirs { "include", "src" }
+
+	if os.istarget("windows") then
+		osfiles = "src/efsw/platform/win/*.cpp"
+	else
+		osfiles = "src/efsw/platform/posix/*.cpp"
+	end
+
 	files { "src/efsw/*.cpp", osfiles }
 	conf_excludes()
 
