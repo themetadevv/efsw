@@ -56,101 +56,63 @@ function conf_excludes()
 	if os.istarget("windows") then
 
 		excludes { 
-			"efsw/src/efsw/WatcherKqueue.cpp",
-			"efsw/src/efsw/WatcherFSEvents.cpp",
-			"efsw/src/efsw/WatcherInotify.cpp",
-			"efsw/src/efsw/FileWatcherKqueue.cpp",
-			"efsw/src/efsw/FileWatcherInotify.cpp",
-			"efsw/src/efsw/FileWatcherFSEvents.cpp"
+			"src/efsw/WatcherKqueue.cpp",
+			"src/efsw/WatcherFSEvents.cpp",
+			"src/efsw/WatcherInotify.cpp",
+			"src/efsw/FileWatcherKqueue.cpp",
+			"src/efsw/FileWatcherInotify.cpp",
+			"src/efsw/FileWatcherFSEvents.cpp"
 		}
 
 	elseif os.istarget("linux") then
 
 		excludes { 
-			"efsw/src/efsw/WatcherKqueue.cpp",
-			"efsw/src/efsw/WatcherFSEvents.cpp",
-			"efsw/src/efsw/WatcherWin32.cpp", 
-			"efsw/src/efsw/FileWatcherKqueue.cpp", 
-			"efsw/src/efsw/FileWatcherWin32.cpp", 
-			"efsw/src/efsw/FileWatcherFSEvents.cpp"
+			"src/efsw/WatcherKqueue.cpp",
+			"src/efsw/WatcherFSEvents.cpp",
+			"src/efsw/WatcherWin32.cpp", 
+			"src/efsw/FileWatcherKqueue.cpp", 
+			"src/efsw/FileWatcherWin32.cpp", 
+			"src/efsw/FileWatcherFSEvents.cpp"
 		}
 
 	elseif os.istarget("macosx") then
 		excludes { 
-			"efsw/src/efsw/WatcherInotify.cpp", 
-			"efsw/src/efsw/WatcherWin32.cpp", 
-			"efsw/src/efsw/FileWatcherInotify.cpp", 
-			"efsw/src/efsw/FileWatcherWin32.cpp" 
+			"src/efsw/WatcherInotify.cpp", 
+			"src/efsw/WatcherWin32.cpp", 
+			"src/efsw/FileWatcherInotify.cpp", 
+			"src/efsw/FileWatcherWin32.cpp" 
 		}
 
 	elseif os.istarget("bsd") then
 		excludes { 
-			"efsw/src/efsw/WatcherInotify.cpp", 
-			"efsw/src/efsw/WatcherWin32.cpp", 
-			"efsw/src/efsw/WatcherFSEvents.cpp", 
-			"efsw/src/efsw/FileWatcherInotify.cpp", 
-			"efsw/src/efsw/FileWatcherWin32.cpp", 
-			"efsw/src/efsw/FileWatcherFSEvents.cpp" 
+			"src/efsw/WatcherInotify.cpp", 
+			"src/efsw/WatcherWin32.cpp", 
+			"src/efsw/WatcherFSEvents.cpp", 
+			"src/efsw/FileWatcherInotify.cpp", 
+			"src/efsw/FileWatcherWin32.cpp", 
+			"src/efsw/FileWatcherFSEvents.cpp" 
 		}
 	end
 end
 
-workspace "efsw"
-	location("./make/" .. os.target() .. "/")
-	targetdir("./bin")
-	configurations { "debug", "release", "relwithdbginfo" }
-	platforms { "x86_64", "x86", "ARM", "ARM64" }
+workspace "EFSW"
+	architecture "x64"
+	configurations {"Debug", "Release"}
 
-	if os.istarget("windows") then
-		osfiles = "efsw/src/efsw/platform/win/*.cpp"
-	else
-		osfiles = "efsw/src/efsw/platform/posix/*.cpp"
-	end
+project "efsw"
+	kind "StaticLib"
+	language "C++"
+	targetdir("./lib")
+	includedirs { "include", "src" }
+	files { "src/efsw/*.cpp", osfiles }
+	conf_excludes()
 
-	-- Activates verbose mode
-	if _OPTIONS["verbose"] then
-		defines { "EFSW_VERBOSE" }
-	end
+	filter "configurations:debug"
+		defines { "DEBUG" }
+		symbols "On"
+		conf_warnings()
 
-	cppdialect "C++11"
-
-	objdir("obj/" .. os.target() .. "/")
-
-	filter "platforms:x86"
-		architecture "x86"
-
-	filter "platforms:x86_64"
-		architecture "x86_64"
-
-	filter "platforms:arm"
-		architecture "ARM"
-
-	filter "platforms:arm64"
-		architecture "ARM64"
-
-	project "efsw-static-lib"
-		kind "StaticLib"
-		language "C++"
-		targetdir("./lib")
-		includedirs { "efsw/include", "efsw/src" }
-		files { "efsw/src/efsw/*.cpp", osfiles }
-		conf_excludes()
-
-		filter "configurations:debug"
-			defines { "DEBUG" }
-			symbols "On"
-			targetname "efsw-static-debug"
-			conf_warnings()
-
-		filter "configurations:release"
-			defines { "NDEBUG" }
-			optimize "On"
-			targetname "efsw-static-release"
-			conf_warnings()
-
-		filter "configurations:relwithdbginfo"
-			defines { "NDEBUG" }
-			symbols "On"
-			optimize "On"
-			targetname "efsw-static-reldbginfo"
-			conf_warnings()
+	filter "configurations:release"
+		defines { "NDEBUG" }
+		optimize "On"
+		conf_warnings()
