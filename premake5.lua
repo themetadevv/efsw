@@ -95,10 +95,6 @@ function conf_excludes()
 	end
 end
 
-workspace "EFSW"
-	architecture "x64"
-	configurations {"Debug", "Release"}
-
 project "efsw"
 	kind "StaticLib"
 	language "C++"
