@@ -113,11 +113,13 @@ project "efsw"
 	filter "configurations:debug"
 		defines { "DEBUG" }
 		symbols "On"
+		optimize "off"
 		conf_warnings()
 	filter ""
 
 	filter "configurations:release"
 		defines { "NDEBUG" }
-		optimize "On"
+		symbols "off"
+		optimize "on"
 		conf_warnings()
 	filter ""
