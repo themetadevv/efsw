@@ -110,14 +110,14 @@ project "efsw"
 	files { "src/efsw/*.cpp", osfiles }
 	conf_excludes()
 
-	filter "configurations:debug"
+	filter "configurations:Debug"
 		defines { "DEBUG" }
 		symbols "On"
 		optimize "off"
 		conf_warnings()
 	filter ""
 
-	filter "configurations:release"
+	filter "configurations:Release"
 		defines { "NDEBUG" }
 		symbols "off"
 		optimize "on"
