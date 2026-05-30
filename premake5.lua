@@ -98,7 +98,10 @@ end
 project "efsw"
 	kind "StaticLib"
 	language "C++"
-	targetdir("./lib")
+
+	targetdir ("bin/builds/%{cfg.system}/%{cfg.buildcfg}")
+    objdir ("bin/intermediates/%{cfg.system}/%{cfg.buildcfg}")
+	
 	includedirs { "include", "src" }
 
 	if os.istarget("windows") then
